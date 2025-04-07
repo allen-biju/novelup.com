@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Home</title>
+    <style>
+         body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f6f8;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h2 {
+      color: #2c3e50;
+      margin-top: 40px;
+      border-left: 5px solid #3498db;
+      padding-left: 10px;
+    }
+
+    form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      margin-bottom: 30px;
+      max-width: 600px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="file"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    select {
+      background-color: #fff;
+    }
+
+    #booksContainer,
+    .book-entry {
+      margin-top: 20px;
+    }
+
+    .book-entry {
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .delete-btn {
+      background-color: #e74c3c;
+    }
+
+    .delete-btn:hover {
+      background-color: #c0392b;
+    }
+
+    #bookSelect,
+    #deleteBookSelect {
+      width: 300px;
+      padding: 8px;
+      font-size: 14px;
+    }
+
+    textarea {
+      resize: vertical;
+      height: 100px;
+    }
+
+    hr {
+      margin: 40px 0;
+      border: none;
+      border-top: 1px solid #ddd;
+    }
+
+    @media screen and (max-width: 700px) {
+      form {
+        padding: 15px;
+        max-width: 100%;
+      }
+
+      h2 {
+        font-size: 20px;
+      }
+    }
+    </style>
+</head>
+<body>
+
+    <h2>Upload a New Book</h2>
+<form id="uploadBookForm" enctype="multipart/form-data">
+    <label for="title">Book Title:</label>
+    <input type="text" id="title" name="title" required><br><br>
+
+    <label for="author">Author:</label>
+    <input type="text" id="author" name="author" required><br><br>
+
+    <label for="language">Language:</label>
+    <input type="text" id="language" name="language" required><br><br>
+    <label for="rentPrice">Rent Price:</label>
+    <input type="number" id="rentPrice" name="rentPrice" required><br><br>
+
+    <label for="actualPrice">Actual Price:</label>
+    <input type="number" id="actualPrice" name="actualPrice" required><br><br>
+
+
+    <label for="category">Book Category:</label>
+    <select  id="category" name="category" required>
+        <option value="FANTACY">FANTACY</option>
+        <option value="SCIENCE FICTION">SCIENCE FICTION</option>
+        <option value="MYSTRY">MYSTRY</option>
+        <option value="THRILLER/SUSPENCE">THRILLER/SUSPENCE</option>
+        <option value="ROMANCE">ROMANCE</option>
+        <option value="HISTORICAL FICTION">HISTORICAL FICTION</option>
+        <option value="HORROR">HORROR</option>
+        <option value="LITERARY FICTION">LITERARY FICTION</option>
+        <option value="ADVENTURE">ADVENTURE</option>
+        <option value="DYSTOPIAN">DYSTOPIAN</option>
+        <option value="BIOGRAPHY">BIOGRAPHY</option>
+        <option value="MEMOIR">MEMOIR</option>
+        <option value="SELF HELP">SELF HELP</option>
+        <option value="SCIENCE/NATURE">SCIENCE/NATURE</option>
+        <option value="PHILOSOPHY">PHILOSOPHY</option>
+        <option value="TRAVEL">TRAVEL</option>
+        <option value="TRUE CRIME">TRUE CRIME</option>
+    </select><br><br>
+    <label for="description">Description:</label>
+    <textarea id="description" name="description"></textarea><br><br>
+
+    <label for="coverImage">Cover Images:</label>
+    <input type="file" id="coverImage" name="bookImage" accept="image/*" required><br><br>
+    <label for="availability">Availability:</label>
+    <select id="availability" name="availability" required>
+        <option value="available">Available</option>
+        <option value="not_available">Not Available</option>
+    </select><br><br>
+
+    
+
+    <button type="submit">Upload Book</button>
+</form>
+
+<hr>
+    
+<h2>Update an Existing Book</h2>
+
+<!-- List of existing books to edit -->
+<select id="bookSelect" onchange="loadBookDetails(this.value)">
+    <option value="">Select a book to update</option>
+    <!-- This will be populated by JavaScript -->
+</select>
+
+<form id="updateBookForm" enctype="multipart/form-data" style="display:none;">
+    <input type="hidden" id="bookId" name="bookId">
+
+    <label for="updateTitle">Book Title:</label>
+    <input type="text" id="updateTitle" name="title" required><br><br>
+
+    <label for="updateAuthor">Author:</label>
+    <input type="text" id="updateAuthor" name="author" required><br><br>
+
+    <label for="updateLanguage">Language:</label>
+    <input type="text" id="updateLanguage" name="language" required><br><br>
+
+    <label for="updateRentPrice">Rent Price:</label>
+    <input type="number" id="updateRentPrice" name="rentPrice" required><br><br>
+
+    <label for="updateActualPrice">Actual Price:</label>
+    <input type="number" id="updateActualPrice" name="actualPrice" required><br><br>
+
+    <label for="updateCategory">Book Category:</label>
+    <select  id="updateCategory" name="category" required>
+        <option value="FANTACY">FANTACY</option>
+        <option value="SCIENCE FICTION">SCIENCE FICTION</option>
+        <option value="MYSTRY">MYSTRY</option>
+        <option value="THRILLER/SUSPENCE">THRILLER/SUSPENCE</option>
+        <option value="ROMANCE">ROMANCE</option>
+        <option value="HISTORICAL FICTION">HISTORICAL FICTION</option>
+        <option value="HORROR">HORROR</option>
+        <option value="LITERARY FICTION">LITERARY FICTION</option>
+        <option value="ADVENTURE">ADVENTURE</option>
+        <option value="DYSTOPIAN">DYSTOPIAN</option>
+        <option value="BIOGRAPHY">BIOGRAPHY</option>
+        <option value="MEMOIR">MEMOIR</option>
+        <option value="SELF HELP">SELF HELP</option>
+        <option value="SCIENCE/NATURE">SCIENCE/NATURE</option>
+        <option value="PHILOSOPHY">PHILOSOPHY</option>
+        <option value="TRAVEL">TRAVEL</option>
+        <option value="TRUE CRIME">TRUE CRIME</option>
+    </select><br><br>
+
+    <label for="updateDescription">Description:</label>
+    <textarea id="updateDescription" name="description"></textarea><br><br>
+
+    <label for="updateCoverImage">Cover Image:</label>
+    <input type="file" id="updateCoverImage" name="bookImage" accept="image/*"><br><br>
+
+    <label for="updateAvailability">Availability:</label>
+    <select id="updateAvailability" name="availability" required>
+        <option value="available">Available</option>
+        <option value="not_available">Not Available</option>
+    </select><br><br>
+
+    <button type="submit">Update Book</button>
+</form>
+<h2>Books List</h2>
+<div id="booksContainer"></div>
+<hr>
+<h2>Navigation</h2>
+<button onclick="window.location.href='admin-orders.html'">Manage Orders</button>
+<h2>Delete a Book</h2>
+<select id="deleteBookSelect">
+    <option value="">Select a book to delete</option>
+</select>
+<button onclick="deleteBookFromDropdown()">Delete Book</button>
+
+    <button onclick="logout()">Logout</button>
+
+    <script>
+        // Fetch existing books from the server and populate the dropdown
+        async function loadBooks() {
+            const adminToken = localStorage.getItem('adminToken');
+    if (!adminToken) {
+        alert('Unauthorized. Please log in again.');
+        window.location.href = 'admin-login.html';
+        return;
+    }
+    try{
+    const response = await fetch('http://localhost:5000/books', {
+        headers: {
+            'Authorization': `Bearer ${adminToken}`
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error('Error fetching books.');
+    }
+
+    const data = await response.json();
+    console.log('Books fetched:', data);
+    if (data.success && Array.isArray(data.books)) { // Check if the books array exists
+            const bookSelect = document.getElementById('bookSelect');
+            const deleteBookSelect = document.getElementById('deleteBookSelect'); // For deleting books
+            const booksContainer = document.getElementById("booksContainer"); // Ensure this exists
+            bookSelect.innerHTML = '<option value="">Select a book to update</option>';
+            deleteBookSelect.innerHTML = '<option value="">Select a book to delete</option>';
+            booksContainer.innerHTML = ""; // Clear previous entries
+            data.books.forEach(book => {
+                const option = document.createElement('option');
+                option.value = book.id;
+                option.textContent = book.title;
+                bookSelect.appendChild(option);
+
+                const optionDelete = document.createElement('option');
+                optionDelete.value = book.id;
+                optionDelete.textContent = book.title;
+                deleteBookSelect.appendChild(optionDelete);
+
+                let bookDiv = document.createElement('div');
+                bookDiv.classList.add('book-entry');
+                bookDiv.id = `book-${book.id}`;
+
+                bookDiv.innerHTML = `
+                    <p><strong>${book.title}</strong> by ${book.author}</p>
+                    <button class="delete-btn" onclick="deleteBook(${book.id})">Delete</button>
+                `;
+
+                booksContainer.appendChild(bookDiv);
+            });
+        } else {
+            alert('No books available to display.');
+        }
+}catch (error) {
+                console.error(error);
+                alert('Error fetching books.');
+            }
+
+        }
+// Fetch and display book details for updating
+async function loadBookDetails(bookId) {
+    if (!bookId) return;
+    
+    const response = await fetch(`http://localhost:5000/admin/book/${bookId}`, {
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        }
+    });
+
+    if (!response.ok) {
+        alert('Error fetching book details.');
+        return;
+    }
+
+    const book = await response.json();
+    document.getElementById('bookId').value = book.id;
+    document.getElementById('updateTitle').value = book.title;
+    document.getElementById('updateAuthor').value = book.author;
+    document.getElementById('updateLanguage').value = book.language;
+    document.getElementById('updateRentPrice').value = book.rentPrice;
+    document.getElementById('updateActualPrice').value = book.actualPrice;
+    document.getElementById('updateCategory').value = book.category;
+    document.getElementById('updateDescription').value = book.description;
+    document.getElementById('updateAvailability').value = book.availability;
+
+    document.getElementById('updateBookForm').style.display = 'block';
+}
+function removeBookFromBooksPage(bookId) {
+    const bookElement = document.getElementById(`book-${bookId}`);
+    if (bookElement) {
+        bookElement.remove(); // Removes the book from the page
+    }
+}
+async function deleteBook(bookId) {
+    if (!confirm("Are you sure you want to delete this book?")) return;
+
+    try {
+        const response = await fetch(`http://localhost:5000/admin/remove-book/${bookId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+            }
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            alert("Book deleted successfully!");
+            document.getElementById(`book-${bookId}`).remove(); // Remove from Admin Page
+            removeBookFromBooksPage(bookId); // Remove from books.html
+            loadBooks(); // Refresh books list
+        } else {
+            alert(`Error: ${data.error}`);
+        }
+    } catch (error) {
+        console.error("Error deleting book:", error);
+        alert("Failed to delete book. Please try again.");
+    }
+}
+function deleteBookFromDropdown() {
+    const bookId = document.getElementById("deleteBookSelect").value;
+    if (bookId) {
+        deleteBook(bookId);
+    } else {
+        alert("Please select a book to delete.");
+    }
+}
+
+
+        
+        document.getElementById('updateBookForm').addEventListener('submit', async function (event) {
+    event.preventDefault(); // Prevent default form submission
+
+    const bookId = document.getElementById('bookId').value; // Ensure you have a hidden field or a way to get the book ID
+    const formData = new FormData(document.getElementById('updateBookForm'));
+
+    try {
+        const response = await fetch(`http://localhost:5000/admin/update-book/${bookId}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+            },
+            body: formData // Sends the form data properly, including the image file
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            alert('Book updated successfully!');
+            document.getElementById('updateBookForm').reset(); // Clear the form after successful update
+            location.reload(); // Refresh the book list to reflect changes
+        } else {
+            alert(`Error: ${result.error}`);
+        }
+    } catch (error) {
+        console.error('Error updating book:', error);
+        alert('Failed to update book. Please try again.');
+    }
+});
+    document.getElementById('uploadBookForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const adminToken = localStorage.getItem('adminToken');
+        if (!adminToken) {
+            alert('Unauthorized. Please log in again.');
+            window.location.href = 'admin-login.html';
+            return;
+        }
+            const title = document.getElementById('title').value.trim();
+            const author = document.getElementById('author').value.trim();
+            const rentprice = document.getElementById('rentPrice').value.trim();
+            const actualPrice = document.getElementById('actualPrice').value.trim();
+            const language = document.getElementById('language').value.trim();
+            const category = document.getElementById('category').value.trim();
+            const description = document.getElementById('description').value.trim();
+            const coverImage = document.getElementById('coverImage').files[0];
+            if (!coverImage) {
+    console.error("No file selected for cover image");
+    return;
+}
+            const availability = document.getElementById("availability").value;
+
+            if (!title || !author || !rentprice  || !language || !category || !coverImage) {
+                alert("Please fill in all fields and upload an image.");
+                return;
+            }
+
+        const formData = new FormData();
+        formData.append("title", document.getElementById("title").value);
+        formData.append("author", document.getElementById("author").value);
+        formData.append("rentPrice", document.getElementById("rentPrice").value);
+        formData.append("actualPrice", document.getElementById("actualPrice").value);
+        formData.append("language", document.getElementById("language").value);
+        formData.append("category", document.getElementById("category").value);
+        formData.append("description", document.getElementById("description").value);
+        formData.append("bookImage", document.getElementById("coverImage").files[0]);
+        console.log(formData);
+        formData.append("availability", document.getElementById("availability").value);
+
+        const response = await fetch('http://localhost:5000/admin/upload-book', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${adminToken}`
+            },
+            body: formData
+        });
+        if (!response.ok) {
+    const errorText = await response.text(); // Get the response text for error messages
+    console.log('Error Response:', errorText);
+    alert('There was an error with the book upload.');
+        }else{
+        const data = await response.json();
+        alert(data.message);
+
+        if (response.ok) {
+            window.location.reload();
+        }
+        }
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+
+    const token = localStorage.getItem("adminToken");
+        loadBooks();
+    if (!token) {
+        alert("Unauthorized! Please log in as an admin.");
+        window.location.href = "admin-login.html"; 
+    }
+    });
+
+
+    function logout() {
+        localStorage.removeItem('adminToken');
+        window.location.href = 'admin-login.html';
+    }
+    </script>
+
+</body>
+</html>

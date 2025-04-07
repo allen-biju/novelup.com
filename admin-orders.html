@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Orders</title>
+    <style>
+        .search-container {
+            margin: 20px 0;
+        }
+        .search-container input {
+            padding: 8px;
+            width: 300px;
+            margin-right: 10px;
+        }
+        .search-container button {
+            padding: 8px 15px;
+        }
+        * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: #f4f6f8;
+      margin: 0;
+      padding: 2rem;
+      color: #333;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #444;
+    }
+
+    .search-container {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .search-container input {
+      padding: 10px;
+      width: 300px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-right: 10px;
+      transition: border-color 0.3s ease;
+    }
+
+    .search-container input:focus {
+      border-color: #5c6bc0;
+      outline: none;
+    }
+
+    .search-container button {
+      padding: 10px 16px;
+      background-color: #5c6bc0;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-right: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .search-container button:hover {
+      background-color: #3f51b5;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #fff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #3f51b5;
+      color: white;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    select {
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .footer-buttons {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .footer-buttons button {
+      padding: 10px 20px;
+      background-color: #ff7043;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+    }
+
+    .footer-buttons button:hover {
+      background-color: #f4511e;
+    }
+
+    @media (max-width: 768px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      th {
+        background-color: #5c6bc0;
+      }
+
+      td {
+        padding: 10px;
+        position: relative;
+        padding-left: 50%;
+      }
+
+      td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        font-weight: bold;
+        white-space: nowrap;
+      }
+    }
+    </style>
+</head>
+<body>
+    <h2>Rental Orders</h2>
+    
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search by name, email or phone number...">
+        <button onclick="searchOrders()">Search</button>
+        <button onclick="clearSearch()">Clear</button>
+    </div>
+    
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Book Title</th>
+                <th>Author</th>
+                <th>Pickup Date</th>
+                <th>Pickup Location</th>
+                <th>Payment Method</th>
+                <th>Status</th>
+                <th>Return Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="ordersTableBody"></tbody>
+    </table>
+    <button onclick="window.location.href='admin.html'">← Back to Admin Home</button>
+    <button onclick="logout()">Logout</button>
+
+    <script>
+        let allOrders = []; // To store all orders for filtering
+        
+        async function fetchOrders() {
+            const token = localStorage.getItem("adminToken");
+            if (!token) {
+                alert("Unauthorized access.");
+                window.location.href = "admin-login.html";
+                return;
+            }
+
+            try {
+                const res = await fetch("http://localhost:5000/orders", {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+
+                const data = await res.json();
+                const tbody = document.getElementById("ordersTableBody");
+                tbody.innerHTML = "";
+
+                if (data.success && Array.isArray(data.orders)) {
+                    allOrders = data.orders; // Store all orders for filtering
+                    displayOrders(allOrders);
+                } else {
+                    tbody.innerHTML = "<tr><td colspan='11'>No orders available.</td></tr>";
+                }
+            } catch (err) {
+                console.error("Error fetching orders", err);
+                alert("Failed to load orders.");
+            }
+        }
+
+        function displayOrders(orders) {
+            const tbody = document.getElementById("ordersTableBody");
+            tbody.innerHTML = "";
+            
+            if (orders.length === 0) {
+                tbody.innerHTML = "<tr><td colspan='11'>No orders found.</td></tr>";
+                return;
+            }
+            
+            orders.forEach(order => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${order.username}</td>
+                    <td>${order.email}</td>
+                    <td>${order.phoneNumber || 'N/A'}</td>
+                    <td>${order.bookTitle}</td>
+                    <td>${order.author}</td>
+                    <td>${order.pickupDate}</td>
+                    <td>${order.pickupLocation}</td>
+                    <td>${order.paymentMethod}</td>
+                    <td>${order.status}</td>
+                    <td>${order.returnDate ? order.returnDate : 'N/A'}</td>
+                    <td>
+                        <select onchange="updateStatus(${order.id}, this.value)">
+                            <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                            <option value="Received" ${order.status === 'Received' ? 'selected' : ''}>Received</option>
+                            <option value="Returned" ${order.status === 'Returned' ? 'selected' : ''}>Returned</option>
+                        </select>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function searchOrders() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            if (!searchTerm) {
+                displayOrders(allOrders);
+                return;
+            }
+            
+            const filteredOrders = allOrders.filter(order => 
+                order.username.toLowerCase().includes(searchTerm) ||
+                order.email.toLowerCase().includes(searchTerm) ||
+                (order.phoneNumber && order.phoneNumber.toLowerCase().includes(searchTerm))
+            );
+            
+            displayOrders(filteredOrders);
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            displayOrders(allOrders);
+        }
+
+        async function updateStatus(orderId, newStatus) {
+            const token = localStorage.getItem("adminToken");
+            try {
+                const res = await fetch(`http://localhost:5000/orders/update-status/${orderId}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                });
+
+                const data = await res.json();
+                if (res.ok) {
+                    alert(`Order ${orderId} updated to ${newStatus}`);
+                    fetchOrders(); // Refresh the orders after update
+                } else {
+                    alert(data.message || "Failed to update status.");
+                }
+            } catch (err) {
+                console.error("Error updating status", err);
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem("adminToken");
+            window.location.href = "admin-login.html";
+        }
+
+        document.addEventListener("DOMContentLoaded", fetchOrders);
+        
+        // Add event listener for Enter key in search input
+        document.getElementById('searchInput').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                searchOrders();
+            }
+        });
+    </script>
+</body>
+</html>

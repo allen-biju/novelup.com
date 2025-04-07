@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <!-- basic -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <!-- mobile metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+      <!-- site metas -->
+      <title>Code Sphere</title>
+      <meta name="keywords" content="">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <!-- bootstrap css -->
+      <link rel="stylesheet" href="css/bootstrap.min.css">
+      <!-- style css -->
+      <link rel="stylesheet" href="css/style.css">
+      <!-- Responsive-->
+      <link rel="stylesheet" href="css/responsive.css">
+      <!-- fevicon -->
+      <link rel="icon" href="images/fevicon.png" type="image/gif" />
+      <!-- Scrollbar Custom CSS -->
+      <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
+      <style>
+        .container_category {
+         width: 100%;
+         height: auto;
+         /* Optional: max width for large screens */
+         display: flex;
+         flex-wrap: wrap;
+         justify-content: center;
+
+         gap: 20px;
+         padding: 10px;
+        }
+        .category-card {
+         position: relative;
+         width: 300px;
+         height: 300px;
+         background-color: #f7faf9;
+         margin: 10px;
+         border-radius: 10px;
+         box-shadow: 0px 0px 10px 2px rgb(130, 130, 130);
+         display: flex;
+         flex-direction: column;
+        }
+        .category-card:hover {
+            transform: scale(1.05);
+            transition-duration: 0.5s;
+        }
+        .category_image{
+            height:260px;
+            width:100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            margin-top: 5px;
+            border-radius: 10px;
+        }
+        .category_image img{
+         width: 100%;
+         max-height: 100%;
+         object-fit:cover;
+         
+        }
+        .category-card h4 {
+            margin-top: 10px;
+            font-weight: 600;
+            text-align: center;
+        }
+        .category-search {
+    margin: 20px 0;
+    display: flex;
+    gap: 10px;
+}
+
+.category-search input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.category-search button {
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.category-search button:hover {
+    background-color: #e0e0e0;
+}
+      </style>
+   </head>
+   <body class="main-layout">
+      <!-- loader  -->
+      <div class="loader_bg"> <div class="loader"><img src="images/loading.gif" alt="#" /></div></div> 
+      <!-- end loader -->
+      <!-- header -->
+      <header>
+         <!-- header inner -->
+         <div class="header">
+            <div class="container">
+               <div class="row">
+                  <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
+                     <div class="full">
+                        <div class="center-desk"></div>
+                     </div>
+                  </div>
+                  <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
+                     <div class="menu-area">
+                        <div class="limit-box">
+                           <nav class="main-menu">
+                              <ul class="menu-area-main">
+                                 <li > <a href="index.html">Home</a> </li>
+                                 <li> <a href="about.html">About us</a> </li>
+                                 <li><a href="books.html">Our Books</a></li>
+                                 <li class="active"><a href="library.html">library</a></li>
+                                 <li><a href="contact.html">Contact us</a></li>
+                                 <li class="mean-last"> <a href="#"><img src="images/search_icon.png" alt="#" /></a> </li>
+                                 <li class="mean-last"> <a href="#"><img src="images/top-icon.png" alt="#" /></a> </li>
+                              </ul>
+                           </nav>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </header>
+      <!-- end header -->
+      <div class="about-bg">
+         <div class="container">
+            <div class="row">
+               <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                  <div class="abouttitle">
+                     <h2>Our Library</h2>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="container">
+         <div class="row">
+             <div class="col-md-6 offset-md-3">
+                 <div class="category-search">
+                     <input type="text" id="categorySearch" placeholder="Search categories...">
+                     <button id="clearSearch">Clear</button>
+                 </div>
+             </div>
+         </div>
+     </div>
+      <div class="container_category">
+            <div class="category-card" onclick="location.href='books.html?category=FANTACY'">
+             <div class="category_image"><img src="images/books/fantasy.jpeg" alt="Fantacy" ></div>
+             <div class="category_h4"> <h4>Fantacy</h4></div>
+            </div>
+            <div class="category-card" onclick="location.href='books.html?category=SCIENCE FICTION'">
+            <div class="category_image"><img src="images/books/Sci-Fi.jpeg" alt="Non-Fiction" width="60"></div>
+            <div class="category_h4"><h4>Science Fiction (sci-fi)</h4></div>
+            </div>
+         <div class="category-card" onclick="location.href='books.html?category=MYSTRY'">
+            <div class="category_image"><img src="images/books/mysterious.jpeg" alt="Mystery" width="60"></div>
+            <div class="category_h4"><h4>Mystery</h4></div>
+         </div>
+         <div class="category-card" onclick="location.href='books.html?category=ROMANCE'">
+            <div class="category_image"><img src="images/books/romance.jpeg" alt="Romance" width="60"></div>
+            <div class="category_h4"><h4>Romance</h4></div>
+         </div>
+         <div class="category-card" onclick="location.href='books.html?category=THRILLER/SUSPENCE'">
+            <div class="category_image"><img src="images/books/thriller_suspense.jpeg" alt="Romance" width="60"></div>
+            <div class="category_h4"><h4>Thriller/Suspense</h4></div>
+        </div>
+        <div class="category-card" onclick="location.href='books.html?category=HISTORICAL FICTION'">
+         <div class="category_image"><img src="images/books/historical_fiction.jpeg" alt="Historical Fiction" width="60"></div>
+         <div class="category_h4"><h4>Historical Fiction</h4></div>
+        </div>
+     <div class="category-card" onclick="location.href='books.html?category=HORROR'">
+      <div class="category_image"><img src="images/books/horror.jpeg" alt="Horror" width="60"></div>
+      <div class="category_h4"><h4>Horror</h4></div>
+     </div>
+     <div class="category-card" onclick="location.href='books.html?category=LITERARY FICTION'">
+      <div class="category_image"><img src="images/books/literary_fiction.jpeg" alt="Literary Fiction" width="60"></div>
+      <div class="category_h4"><h4>Literary Fiction</h4></div>
+     </div>
+     <div class="category-card" onclick="location.href='books.html?category=ADVENTURE'">
+      <div class="category_image"><img src="images/books/adventure.jpeg" alt="Adventure" width="60"></div>
+      <div class="category_h4"><h4>Adventure</h4></div>
+     </div>
+     <div class="category-card" onclick="location.href='books.html?category=DYSTOPIAN'">
+      <div class="category_image"><img src="images/books/dystopian.jpeg" alt="Dystopian" width="60"></div>
+      <div class="category_h4"><h4>Dystopian</h4></div>
+     </div>
+     <div class="category-card" onclick="location.href='books.html?category=AUTOBIOGRAPHY'">
+      <div class="category_image"><img src="images/books/autobiography.jpeg" alt="Autobiography" width="60"></div>
+      <div class="category_h4"><h4>Autobiography</h4></div>
+     </div>
+     <div class="category-card" onclick="location.href='books.html?category=BIOGRAPHY'">
+      <div class="category_image"><img src="images/books/bio&autobio.jpeg" alt="Biography" width="60"></div>
+      <div class="category_h4"><h4>Biography</h4></div>
+     </div>
+     <div class="category-card" onclick="location.href='books.html?category=MEMOIR'">
+      <div class="category_image"><img src="images/books/memoirs.jpeg" alt="Memoir" width="60"></div>
+      <div class="category_h4"><h4>Memoir</h4></div>
+     </div>
+     <div class="category-card" onclick="location.href='books.html?category=SELF HELP'">
+      <div class="category_image"><img src="images/books/self_help.jpeg" alt="Self-Help" width="60"></div>
+      <div class="category_h4"><h4>Self-Help</h4></div>
+     </div>
+     <div class="category-card" onclick="location.href='books.html?category=HISTORY'">
+      <div class="category_image"><img src="images/books/history.jpeg" alt="History" width="60"></div>
+      <div class="category_h4"><h4>History</h4></div>
+     </div>
+     <div class="category-card" onclick="location.href='books.html?category=SCIENCE/NATURE'">
+      <div class="category_image"><img src="images/books/science_nature.jpeg" alt="Science/Nature" width="60"></div>
+      <div class="category_h4"><h4>Science/Nature</h4></div>
+     </div>
+     <div class="category-card" onclick="location.href='books.html?category=PHILLOSOPHY'">
+      <div class="category_image"><img src="images/books/phillosaphy.jpeg" alt="Phillosophy" width="60"></div>
+      <div class="category_h4"><h4>Phillosophy</h4></div>
+     </div>
+     <div class="category-card" onclick="location.href='books.html?category=TRAVEL'">
+      <div class="category_image"><img src="images/books/travel.jpeg" alt="Travel" width="60"></div>
+      <div class="category_h4"><h4>Travel</h4></div>
+     </div>
+     <div class="category-card" onclick="location.href='books.html?category=TRUE CRIME'">
+      <div class="category_image"><img src="images/books/True_Crime.jpeg" alt="True Crime" width="60"></div>
+      <div class="category_h4"><h4>True Crime</h4></div>
+     </div>
+     </div>
+      <!-- Library -->
+      <div class="Library">
+         <div class="container">
+            <div class="row">
+               <div class="col-md-10 offset-md-1">
+                  <div class="titlepage">
+                     <span>Whether you’re a student, an avid reader, or someone looking for a one-time read, our flexible rental plans ensure you get the books you love at a fraction of the cost. With easy online browsing, doorstep delivery, and hassle-free returns, we make book renting simple and enjoyable</span> 
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="bg">
+            <div class="container">
+               <div class="row">
+                  <div class="col-md-10 offset-md-1">
+                     <div class="Library-box">
+                        <figure><img src="images/Library-.jpg" alt="#"/></figure>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="container">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="read-more">
+                     <a href="#">Read More</a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- end Library -->
+      <!-- footer -->
+      <footer>
+         <div class="footer">
+            <div class="container">
+               <div class="row pdn-top-30">
+                  <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                     <div class="Follow">
+                        <h3>Follow Us</h3>
+                     </div>
+                     <ul class="location_icon">
+                        <li> <a href="#"><img src="icon/facebook.png"></a></li>
+                        <li> <a href="#"><img src="icon/Twitter.png"></a></li>
+                        <li> <a href="#"><img src="icon/linkedin.png"></a></li>
+                        <li> <a href="#"><img src="icon/instagram.png"></a></li>
+                     </ul>
+                  </div>
+                  <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                     <div class="Follow">
+                        <h3>Newsletter</h3>
+                     </div>
+                     <input class="Newsletter" placeholder="Enter your email" type="Enter your email">
+                     <button class="Subscribe">Subscribe</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="copyright">
+            <div class="container">
+               <p>Copyright 2019 All Right Reserved By <a href="https://html.design/">Codesphere</a></p>
+            </div>
+         </div>
+      </footer>
+      <!-- end footer -->
+      <!-- Javascript files-->
+      <script src="js/jquery.min.js"></script>
+      <script src="js/popper.min.js"></script>
+      <script src="js/bootstrap.bundle.min.js"></script>
+      <script src="js/jquery-3.0.0.min.js"></script>
+      <script src="js/plugin.js"></script>
+      <!-- sidebar -->
+      <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+      <script src="js/custom.js"></script>
+      <script>
+         document.addEventListener("DOMContentLoaded", function() {
+             const searchInput = document.getElementById('categorySearch');
+             const clearButton = document.getElementById('clearSearch');
+             const categoryCards = document.querySelectorAll('.category-card');
+             
+             // Search function
+             function filterCategories() {
+                 const searchTerm = searchInput.value.toLowerCase();
+                 
+                 categoryCards.forEach(card => {
+                     const categoryName = card.querySelector('h4').textContent.toLowerCase();
+                     if (categoryName.includes(searchTerm)) {
+                         card.style.display = 'flex';
+                     } else {
+                         card.style.display = 'none';
+                     }
+                 });
+             }
+             
+             // Clear search function
+             function clearSearch() {
+                 searchInput.value = '';
+                 categoryCards.forEach(card => {
+                     card.style.display = 'flex';
+                 });
+             }
+             
+             // Event listeners
+             searchInput.addEventListener('input', filterCategories);
+             clearButton.addEventListener('click', clearSearch);
+             
+             // Debounce the search input for better performance
+             function debounce(func, wait) {
+                 let timeout;
+                 return function() {
+                     const context = this, args = arguments;
+                     clearTimeout(timeout);
+                     timeout = setTimeout(() => func.apply(context, args), wait);
+                 };
+             }
+             
+             // Apply debounce to search input
+             searchInput.addEventListener('input', debounce(filterCategories, 300));
+         });
+         </script>
+   </body>
+</html>

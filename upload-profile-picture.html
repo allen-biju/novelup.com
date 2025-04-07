@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Profile Picture</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            /* background: linear-gradient(135deg, #4a90e2, #9013fe); */
+            color: white;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            border-radius: 15px;
+            backdrop-filter: blur(12px);
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 420px;
+            width: 100%;
+            color:black;
+        }
+
+        h2 {
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .file-upload {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 3px dashed rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            cursor: pointer;
+            margin: 20px auto;
+            overflow: hidden;
+            position: relative;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .file-upload img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            display: none;
+            position: absolute;
+        }
+
+        .file-upload:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-save {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background: #218838;
+        }
+
+        .btn-skip {
+            background: transparent;
+            border: 2px solid white;
+            color:grey;
+        }
+
+        .btn-skip:hover {
+            background: white;
+            color: #333;
+        }
+
+        .file-name {
+            font-size: 14px;
+            margin-top: 10px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Upload Your Profile Picture</h2>
+        <label for="profileImage" class="file-upload">
+            <span id="uploadText">Click to Upload</span>
+            <input type="file" id="profileImage" accept="image/*" onchange="displayFileName(event)">
+            <img id="previewImage">
+        </label>
+        <p class="file-name" id="fileName">No file selected</p>
+        <button class="btn btn-save" onclick="uploadProfilePicture(false)">Save</button>
+        <button class="btn btn-skip" onclick="uploadProfilePicture(true)">Skip</button>
+    </div>
+<script>
+   async function uploadProfilePicture(isSkipping = false) {
+    console.log("📢 uploadProfilePicture function called with isSkipping:", isSkipping);
+
+    const token = sessionStorage.getItem("token"); 
+    console.log("Token being sent:", token); 
+
+    if (!token) {
+        alert("Authentication required. Please log in again.");
+        window.location.href = "login.html";
+        return;
+    }
+
+    if (isSkipping) {  
+        console.log("User chose to skip profile upload.");
+
+        try {
+            const response = await fetch("http://127.0.0.1:5000/set-default-profile", {
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/json", // 🔹 Ensures correct format
+                    "Authorization": `Bearer ${token}` 
+                },
+                body: JSON.stringify({ profileImage: "default.jpg" }) // 🔹 Explicitly setting the default image
+            });
+
+            const result = await response.json();
+            console.log("Set Default Profile Response:", result);
+
+            if (response.ok && result.success) {
+                alert("Default profile picture set.");
+
+                // 🔹 Delay redirection slightly for smooth transition
+                setTimeout(() => {
+                    window.location.href = "index.html";
+                }, 100);
+                
+                // 🔹 Remove token AFTER redirection to avoid issues
+                // setTimeout(() => sessionStorage.removeItem("token"), 500);
+            } else {
+                alert(result.message || "Failed to set default profile.");
+            }
+        } catch (error) {
+            console.error("Error setting default profile:", error);
+            alert("Something went wrong. Please try again.");
+        }
+        return; 
+    }
+
+    // If user is not skipping, upload profile picture
+    const fileInput = document.getElementById("profileImage");
+
+    if (!fileInput || fileInput.files.length === 0) {
+        alert("Please select a profile picture before saving.");
+        console.log("File input missing or no file selected.");
+        return;
+    }
+
+    const formData = new FormData();
+    const file = fileInput.files[0];
+    console.log("Selected File:", file);
+
+    if (!file) {
+        alert("No file detected. Try selecting again.");
+        return;
+    }
+
+    formData.append("profileImage", file);
+    console.log("Sending FormData:", [...formData.entries()]); 
+
+    try {
+        console.log("🔄 Sending request to backend...");
+        const response = await fetch("http://127.0.0.1:5000/upload-profile-picture", {
+            method: "POST",
+            headers: { "Authorization": `Bearer ${token}` }, 
+            body: formData
+        });
+        console.log("📡 Response received:", response);
+        const result = await response.json();
+        console.log("📜 Parsed response JSON:", result);
+        
+        if (response.ok && result.success) {
+            console.log("✅ Upload successful!");
+            console.log("Checking response.ok:", response.ok);
+            console.log("Checking result.success:", result.success);
+            setTimeout(() => {
+                    window.location.href = "index.html";
+                }, 100);
+            alert("Profile picture uploaded successfully!");
+            console.log("🚀 Redirecting now...");
+           
+                
+                // 🔹 Remove token AFTER redirection to avoid issues
+                setTimeout(() => sessionStorage.removeItem("token"), 500);
+            
+     } else {
+            alert(result.message || "Profile picture upload failed.");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Something went wrong. Please try again.");
+    }
+}
+function displayFileName(event) {
+    const fileInput = document.getElementById("profileImage");
+    const fileNameDisplay = document.getElementById("fileName");
+    const previewImage = document.getElementById("previewImage");
+
+    if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+
+        console.log("File selected:", file); // Debugging file selection
+        fileNameDisplay.textContent = file.name;
+        previewImage.src = URL.createObjectURL(file);
+        previewImage.style.display = "block";
+    } else {
+        console.log("No file selected.");
+        fileNameDisplay.textContent = "No file selected";
+        previewImage.style.display = "none";
+    }
+}
+
+</script>    
+</body>
+</html>

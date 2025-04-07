@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Details</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: #ffffff;
+            max-width: 800px;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-cover {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .book-cover img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .book-details {
+            flex: 2;
+            padding: 20px;
+        }
+
+        .book-details h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .book-details p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .book-details strong {
+            color: #222;
+        }
+
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #rentButton {
+            background: #007bff;
+            color: white;
+        }
+
+        #rentButton:hover {
+            background: #0056b3;
+        }
+
+        #backButton {
+            background: #6c757d;
+            color: white;
+        }
+
+        #backButton:hover {
+            background: #545b62;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .book-cover img {
+                width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Details</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: #ffffff;
+            max-width: 800px;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-cover {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .book-cover img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .book-details {
+            flex: 2;
+            padding: 20px;
+        }
+
+        .book-details h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .book-details p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .book-details strong {
+            color: #222;
+        }
+
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #rentButton {
+            background: #007bff;
+            color: white;
+        }
+
+        #rentButton:hover {
+            background: #0056b3;
+        }
+
+        #backButton {
+            background: #6c757d;
+            color: white;
+        }
+
+        #backButton:hover {
+            background: #545b62;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .book-cover img {
+                width: 250px;
+            }
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 70%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .modal-content h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .modal-content p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .modal button {
+            padding: 12px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .modal button:hover {
+            background-color: #0056b3;
+        }
+        .modal .back-button {
+            background-color: #6c757d;
+        }
+
+        .modal .back-button:hover {
+            background-color: #545b62;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="book-cover">
+            <img id="bookCover" src="" alt="Book Cover">
+        </div>
+
+        <div class="book-details">
+            <h2 id="bookTitle"></h2>
+            <p id="bookAuthor"><strong>Author:</strong> <span></span></p>
+            <p id="bookCategory"><strong>Category:</strong> <span></span></p>
+            <p id="bookLanguage"><strong>Language:</strong> <span></span></p>
+            <p id="bookrentPrice"><strong> Rent Price:</strong> <span></span></p>
+            <p id="bookactualPrice"><strong>Actual Price:</strong> <span></span></p>
+            <p id="bookDescription"><strong>Description:</strong> <span></span></p>
+
+            <div class="buttons">
+                <button id="rentButton">Rent This Book</button>
+                <button id="backButton" onclick="window.history.back()">Back to Books</button>
+            </div>
+        </div>
+    </div>
+    <div id="rentModal" class="modal">
+        <div class="modal-content">
+            <h2>Payment & Refund Policy</h2>
+            <p>
+                The full retail price of the book is required upfront as a deposit; upon returning the book in good condition within the agreed timeframe, the rental fee will be deducted, and the remaining balance will be refunded to you—for example, if the book’s price is [X] and the rental fee is [Y], you’ll receive [X-Y] as your refund.
+                Please ensure the book is undamaged to qualify.
+            </p>
+            <button id="proceedButton">Proceed</button>
+            <button class="back-button" id="backModalButton">Back</button>
+        </div>
+    </div>
+
+    <script >
+        // book-details.html - Script to fetch book details based on the ID in the URL
+        async function loadBookDetails() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookId = urlParams.get('id'); // Get book ID from the URL query string
+
+    if (!bookId) {
+        alert('Book not found!');
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:5000/books/${bookId}`); // API call to fetch book details by ID
+
+        if (!response.ok) {
+            // If the response is not OK, throw an error
+            throw new Error('Failed to fetch book details');
+        }
+
+        const book = await response.json(); // Parse the response JSON
+
+        if (book) {
+            // Populate the HTML elements with the book details
+            document.getElementById('bookTitle').innerText = book.title;
+            document.getElementById('bookAuthor').innerHTML = `<strong>Author:</strong> ${book.author}`;
+            document.getElementById('bookCategory').innerHTML = `<strong>Category:</strong> ${book.category}`;
+            document.getElementById('bookLanguage').innerHTML = `<strong>Language:</strong> ${book.language}`;
+            document.getElementById('bookrentPrice').innerHTML = `<strong> Rent Price:</strong> $${book.rentPrice}`;
+            document.getElementById('bookactualPrice').innerHTML = `<strong> Actual Price:</strong> $${book.actualPrice}`;
+            document.getElementById('bookDescription').innerHTML = `<strong>Description:</strong> ${book.description}`;
+            document.getElementById('bookCover').src = `http://localhost:5000/uploads/book_images/${book.coverImage || 'default-image.jpg'}`;
+        } else {
+            alert('Book details not found.');
+        }
+    } catch (error) {
+        console.error('Error fetching book details:', error);
+        alert('Error loading book details.');
+    }
+}
+        function showModal() {
+            const modal = document.getElementById('rentModal');
+            modal.style.display = 'flex'; // Show the modal
+        }
+
+        // Function to hide modal and redirect to the rental page
+        function proceedToRental() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const bookId = urlParams.get('id');
+            const modal = document.getElementById('rentModal');
+            modal.style.display = 'none'; // Hide the modal
+            window.location.href = `rental-details.html?id=${bookId}`; // Redirect to the page where the user can select the pickup date, location, etc.
+        }
+        function closeModal() {
+            const modal = document.getElementById('rentModal');
+            modal.style.display = 'none'; // Hide the modal
+        }
+
+        // Add event listener for rent button
+        document.getElementById('rentButton').addEventListener('click', showModal);
+
+        // Add event listener for proceed button in modal
+        document.getElementById('proceedButton').addEventListener('click', proceedToRental);
+
+        // Add event listener for back button in modal
+        document.getElementById('backModalButton').addEventListener('click', closeModal);
+        document.addEventListener('DOMContentLoaded', loadBookDetails);
+
+
+    </script>
+</body>
+</html>

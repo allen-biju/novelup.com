@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <!-- basic -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <!-- mobile metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+      <!-- site metas -->
+      <title>Codesphere</title>
+      <meta name="keywords" content="">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <!-- bootstrap css -->
+      <link rel="stylesheet" href="css/bootstrap.min.css">
+      <!-- style css -->
+      <link rel="stylesheet" href="css/style.css">
+      <!-- Responsive-->
+      <link rel="stylesheet" href="css/responsive.css">
+      <!-- fevicon -->
+      <link rel="icon" href="images/fevicon.png" type="image/gif" />
+      <!-- Scrollbar Custom CSS -->
+      <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
+      <!-- Tweaks for older IEs-->
+      <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+   </head>
+   <!-- body -->
+   <body class="main-layout Books-bg">
+      <!-- loader  -->
+      <div class="loader_bg">
+         <div class="loader"><img src="images/loading.gif" alt="#" /></div>
+      </div>
+      <!-- end loader -->
+      <!-- header -->
+      <header>
+         <!-- header inner -->
+         <div class="header">
+            <div class="container">
+               <div class="row">
+                  <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
+                     <div class="full">
+                        <div class="center-desk">
+                           <!-- <div class="logo"> <a href="index.html"><img src="images/logo.png" alt="#"></a> </div> -->
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
+                     <div class="menu-area">
+                        <div class="limit-box">
+                           <nav class="main-menu">
+                              <ul class="menu-area-main">
+                                 <li > <a href="index.html">Home</a> </li>
+                                 <li> <a href="about.html">About us</a> </li>
+                                 <li class="active"><a href="books.html">Our Books</a></li>
+                                 <li><a href="library.html">library</a></li>
+                                 <li><a href="contact.html">Contact us</a></li>
+                                 <!-- In your header section, replace the search icon li with this: -->
+                                 <li class="mean-last"> <a href="#"><img src="images/top-icon.png" alt="#" /></a> </li>
+                              </ul>
+                           </nav>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         </div>
+         <!-- end header inner -->
+      </header>
+      <!-- end header -->
+      <div class="about-bg">
+         <div id="ourbookcont" class="container">
+            <div class="row">
+               <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                  <div class="abouttitle">
+                     <h2>Our Books</h2>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class=" mean-last search-container"> 
+         <div class="search-wrapper">
+            <input type="text" id="searchInput" placeholder="Search books...">
+            <button id="searchButton" class="search-icon">
+               <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+          </div>
+        </div>
+        <div class="filter-controls">
+         <div id="current-filter" style="display: none; margin: 10px 0;">
+             <span>Currently viewing: </span>
+             <strong id="current-category"></strong>
+             <button id="clear-filter" class="btn btn-sm btn-outline-secondary" style="margin-left: 10px;">
+                 Clear Filter
+             </button>
+         </div>
+     </div>
+      <!--Books -->
+      <div id="chcontainer" class="chcontainer"><div id="books-container" class="books-container"></div> <!-- Where books will be added dynamically --></div>
+
+      <script>
+         
+  // Global variable to store all books
+  let allBooks = [];
+
+  // Fetch books from backend and create book divs
+  function fetchBooks() {
+    const categoryParam = getUrlParameter('category');
+    console.log("Category from URL:", categoryParam);
+    fetch('http://localhost:5000/books')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success && data.books.length > 0) {
+                allBooks = data.books;
+                
+                // Filter by category if one is specified in URL
+                let booksToDisplay = allBooks;
+                if (categoryParam) {
+                    // Convert both database category and URL param to uppercase for comparison
+                    booksToDisplay = allBooks.filter(book => 
+                        book.category && book.category.toUpperCase() === categoryParam.toUpperCase()
+                    );
+                    
+                    // Update page title to show category
+                    const titleElement = document.querySelector('.abouttitle h2');
+                    if (titleElement) {
+                        // Format the category name nicely (capitalize first letter, rest lowercase)
+                        const formattedCategory = categoryParam.toLowerCase()
+                            .split(' ')
+                            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                            .join(' ');
+                        titleElement.textContent = `${formattedCategory} Books`;
+                    }
+                }
+                
+                displayBooks(booksToDisplay);
+                updateFilterUI(); // Update the filter display
+            } else {
+                document.getElementById('books-container').innerHTML = '<p>No books available at the moment.</p>';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching books:', error);
+            document.getElementById('books-container').innerHTML = 
+                '<p>There was an error loading the books. Please try again later.</p>';
+        });
+}
+  // Function to display books
+  function displayBooks(books) {
+      let container = document.getElementById('books-container');
+      container.innerHTML = ''; // Clear old content
+
+      if (books.length === 0) {
+          container.innerHTML = '<p>No books match your search.</p>';
+          return;
+      }
+
+      books.forEach(book => {
+          let bookDiv = document.createElement('div');
+          bookDiv.classList.add('bookchs');
+          
+          if (!book.available) {
+              bookDiv.classList.add('unavailable');
+          }
+
+          bookDiv.innerHTML = `
+              <div class="bookheader">${book.title}</div>
+              <div class="bookimg">
+                  <img src="http://localhost:5000/uploads/book_images/${book.coverImage || 'default-image.jpg'}" alt="${book.title}">
+              </div>
+              <div class="bookauthor"><strong>Author:</strong> ${book.author}</div>
+              <div class="booklanguage"><strong>Language:</strong> ${book.language || 'English'}</div>
+              <div class="bookcategory"><strong>category:</strong> ${book.category || 'N/A'}</div>
+              <div class="bookprice">Price: $${book.rentPrice}/day</div>
+              ${!book.available?'<div class="not-available">NOT AVAILABLE AT THE MOMENT</div>' : '' }
+          `;
+          
+          bookDiv.addEventListener('click', function() {
+              window.location.href = `book-details.html?id=${book.id}`;
+          });
+
+          container.appendChild(bookDiv);
+      });
+  }
+
+  // Search function
+  function searchBooks() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const categoryParam = getUrlParameter('category');
+    
+    let filteredBooks = allBooks;
+    
+    // Apply category filter if present (case-insensitive comparison)
+    if (categoryParam) {
+        filteredBooks = filteredBooks.filter(book => 
+            book.category && book.category.toUpperCase() === categoryParam.toUpperCase()
+        );
+    }
+    
+    // Apply search filter
+    if (searchTerm) {
+        filteredBooks = filteredBooks.filter(book => {
+            return (
+                book.title.toLowerCase().includes(searchTerm) ||
+                book.author.toLowerCase().includes(searchTerm) ||
+                (book.category && book.category.toLowerCase().includes(searchTerm)) ||
+                (book.language && book.language.toLowerCase().includes(searchTerm))
+            );
+        });
+    }
+    
+    displayBooks(filteredBooks);
+}
+function updateFilterUI() {
+    const category = getUrlParameter('category');
+    const filterElement = document.getElementById('current-filter');
+    const categoryElement = document.getElementById('current-category');
+    
+    if (category) {
+        filterElement.style.display = 'block';
+        categoryElement.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+    } else {
+        filterElement.style.display = 'none';
+    }
+}
+
+// Clear filter handler
+document.getElementById('clear-filter').addEventListener('click', function() {
+    window.location.href = 'books.html'; // Remove the category parameter
+});
+
+// Call this after fetching books
+updateFilterUI();
+  // Add event listener for search input
+  document.addEventListener("DOMContentLoaded", function() {
+      fetchBooks();
+      
+      // Add event listener for search input
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+          searchInput.addEventListener('input', searchBooks);
+      }
+  });
+  // Add this at the top of your script
+function debounce(func, wait) {
+    let timeout;
+    return function() {
+        const context = this, args = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(context, args), wait);
+    };
+   }
+// Then modify your event listener:
+searchInput.addEventListener('input', debounce(searchBooks, 300));
+
+// Function to get URL parameters
+function getUrlParameter(name) {
+    name = name.replace(/[\[\]]/g, '\\$&');
+    const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+    const results = regex.exec(window.location.search);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+
+
+
+     </script>
+     
+
+       
+      <div class="Books">
+         <div class="container">
+            <div class="row">
+               <div class="col-md-10 offset-md-1">
+                  <div class="titlepage">
+                     <span>Whether you’re a student, an avid reader, or someone looking for a one-time read, our flexible rental plans ensure you get the books you love at a fraction of the cost. With easy online browsing, doorstep delivery, and hassle-free returns, we make book renting simple and enjoyable</span> 
+                  </div>
+               </div>
+            </div>
+            <div class="row box">
+               <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
+                  <div class="book-box">
+                     <figure><img src="images/book-1.jpg" alt="img"/></figure>
+                  </div>
+               </div>
+               <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                  <div class="book-box">
+                     <figure><img src="images/book-2.jpg" alt="img"/></figure>
+                  </div>
+               </div>
+               <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
+                  <div class="book-box">
+                     <figure><img src="images/book-1.jpg" alt="img"/></figure>
+                  </div>
+               </div>
+               <div class="col-md-6 offset-md-3">
+                  <p>magna aliqua. Ut enim ad minim veniam,quis nostrud exercitation ullamco laboris</p>
+               </div>
+            </div>
+            <div class="container">
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="read-more">
+                        <a href="#">Read More</a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- end Books -->
+      <!-- footer -->
+      <footer>
+         <div class="footer">
+            <div class="container">
+               <div class="row pdn-top-30">
+                  <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                     <div class="Follow">
+                        <h3>Follow Us</h3>
+                     </div>
+                     <ul class="location_icon">
+                        <li> <a href="#"><img src="icon/facebook.png"></a></li>
+                        <li> <a href="#"><img src="icon/Twitter.png"></a></li>
+                        <li> <a href="#"><img src="icon/linkedin.png"></a></li>
+                        <li> <a href="#"><img src="icon/instagram.png"></a></li>
+                     </ul>
+                  </div>
+                  <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                     <div class="Follow">
+                        <h3>Newsletter</h3>
+                     </div>
+                     <input class="Newsletter" placeholder="Enter your email" type="Enter your email">
+                     <button class="Subscribe">Subscribe</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="copyright">
+            <div class="container">
+               <p>Copyright 2019 All Right Reserved By <a href="https://html.design/">Codesphere</a></p>
+            </div>
+         </div>
+      </footer>
+      <!-- end footer -->
+      <!-- Javascript files-->
+      <script src="js/jquery.min.js"></script>
+      <script src="js/popper.min.js"></script>
+      <script src="js/bootstrap.bundle.min.js"></script>
+      <script src="js/jquery-3.0.0.min.js"></script>
+      <script src="js/plugin.js"></script>
+      <!-- sidebar -->
+      <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+      <script src="js/custom.js"></script>
+        
+
+   </body>
+</html>

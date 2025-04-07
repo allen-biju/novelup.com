@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="log01.css">
+    <style>
+        .modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 10px;
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+/* Modal container */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Modal content */
+.modal-content {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Modal text and inputs */
+.modal-content h2 {
+  margin-bottom: 15px;
+  font-size: 24px;
+  color: #333;
+}
+
+.modal-content p {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: #555;
+}
+
+#otp-input {
+  width: 80%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  margin-bottom: 20px;
+  transition: border-color 0.2s;
+}
+
+#otp-input:focus {
+  border-color: #4CAF50;
+}
+
+/* Buttons */
+.modal-buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.modal-buttons button {
+  padding: 10px 20px;
+  font-size: 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.modal-buttons button:first-child {
+  background: #4CAF50;
+  color: white;
+}
+
+.modal-buttons button:first-child:hover {
+  background: #45a049;
+}
+
+.modal-buttons button:last-child {
+  background: #f44336;
+  color: white;
+}
+
+.modal-buttons button:last-child:hover {
+  background: #e53935;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
+    </style>
+</head>
+<body>
+    <div class="login-wrap">
+        <div class="login-html">
+            <input id="tab-1" type="radio" name="tab" class="sign-in" checked>
+            <label for="tab-1" class="tab">Sign In</label>
+            <input id="tab-2" type="radio" name="tab" class="sign-up">
+            <label for="tab-2" class="tab">Sign Up</label>
+            
+            <div class="login-form">
+                <!-- Sign In Form -->
+                <div class="sign-in-htm">
+                    <div class="group">
+                        <label for="login-user" class="label">Username or Email</label>
+                        <input id="login-user" type="text" class="input">
+                    </div>
+                    <div class="group">
+                        <label for="login-pass" class="label">Password</label>
+                        <input id="login-pass" type="password" class="input">
+                    </div>
+                    <div style="text-align: right; margin-top: -10px; margin-bottom: 10px;">
+                        <a href="#" onclick="showForgotPasswordModal()" style="font-size: 0.9rem;">Forgot Password?</a>
+                    </div>
+                    
+                    <div class="group">
+                        <input type="submit" class="button" value="Sign In" onclick="loginUser()">
+                    </div>
+                </div>
+                
+                <!-- Sign Up Form -->
+                <div class="sign-up-htm">
+                    <div class="group">
+                        <label for="first-name" class="label">First Name</label>
+                        <input id="first-name" type="text" class="input">
+                    </div>
+                    <div class="group">
+                        <label for="last-name" class="label">Last Name</label>
+                        <input id="last-name" type="text" class="input">
+                    </div>
+                    <div class="group">
+                        <label class="label">Choose Contact Method</label>
+                        <select id="contact-method" onchange="toggleContactInput()">
+                            <option value="email">Email</option>
+                            <option value="phone">Phone Number</option>
+                        </select>
+                    </div>
+                    <div class="group">
+                        <label id="contact-label" class="label">Email</label>
+                        <input id="contact-input" type="email" class="input">
+                    </div>
+                    <div class="group">
+                        <label for="dob" class="label">Date of Birth</label>
+                        <input id="dob" type="date" class="input">
+                    </div>
+                    <div class="group">
+                        <label for="signup-pass" class="label">Password</label>
+                        <input id="signup-pass" type="password" class="input">
+                    </div>
+                    <div class="group">
+                        <input type="submit" class="button" value="Sign Up" onclick="registerUser()">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="forgotPasswordModal">
+        <div class="modal-content">
+          <h3>Reset Password</h3>
+          <p>Enter your registered email</p>
+          <input type="email" id="resetEmail" placeholder="Your email">
+          <button onclick="sendResetLink()">Send Reset Link</button>
+          <br><br>
+          <a href="#" onclick="closeForgotPasswordModal()">Cancel</a>
+        </div>
+      </div>
+      
+      <!-- OTP Modal -->
+<div id="otpModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <h2>Verify OTP</h2>
+      <p>Enter the OTP sent to your <span id="otpContactMethod">email/phone</span>:</p>
+      <input type="text" id="otp-input" placeholder="Enter OTP" />
+      <div class="modal-buttons">
+        <button onclick="submitOTP()">Verify</button>
+        <button onclick="closeOtpModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+  
+    
+    <script>
+        function toggleContactInput() {
+            const method = document.getElementById("contact-method").value;
+            const label = document.getElementById("contact-label");
+            const input = document.getElementById("contact-input");
+            
+            if (method === "email") {
+                label.innerText = "Email";
+                input.type = "email";
+            } else {
+                label.innerText = "Phone Number";
+                input.type = "tel";
+            }
+        }
+
+        async function registerUser() {
+    const firstName = document.getElementById("first-name").value.trim();
+    const lastName = document.getElementById("last-name").value.trim();
+    const contactMethod = document.getElementById("contact-method").value;
+    const contact = document.getElementById("contact-input").value.trim();
+    const dob = document.getElementById("dob").value;
+    const password = document.getElementById("signup-pass").value;
+
+    if (!contact) {
+        alert("Please enter either an Email or a Phone Number.");
+        return;
+    }
+
+    const userData = {
+        firstName,
+        lastName,
+        email: contactMethod === "email" ? contact : null,
+        phoneNumber: contactMethod === "phone" ? contact : null,
+        dateOfBirth: dob,
+        password
+    };
+    const contactValue = userData.email || userData.phoneNumber;
+
+    try{
+        // 🔹 Send OTP
+        const otpResponse = await fetch("http://localhost:5000/send-otp", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(userData) // could be phone or email
+        });
+
+        const sendOtpData = await otpResponse.json();
+
+        if (!otpResponse.ok) {
+            alert(sendOtpData.error || "Failed to send OTP.");
+            return;
+        }
+
+        currentUserData = userData;
+        currentContactValue = contactValue;
+        currentContactMethod = contactMethod;
+
+        // ✅ Show OTP modal
+        showOtpModal(contactMethod);
+
+    } catch (err) {
+        console.error("Registration Error:", err);
+        alert("Something went wrong. Please try again.");
+    }
+}
+
+        // Step 3: Verify OTP & Register
+        async function verifyOtp() {
+    const otp = document.getElementById("otp-input").value.trim();
+    if (!otp) return alert("Please enter the OTP.");
+
+    try {
+        const verifyRes = await fetch("http://localhost:5000/verify-otp", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                contact: currentContactValue,
+                otp
+            })
+        });
+
+        const verifyData = await verifyRes.json();
+
+        if (verifyRes.ok) {
+            alert("Registration successful!");
+            sessionStorage.setItem("token", verifyData.token);
+            sessionStorage.setItem("userId", verifyData.user.id);
+            window.location.href = "upload-profile-picture.html";
+        } else {
+            alert(verifyData.error || "OTP verification failed.");
+        }
+    } catch (err) {
+        console.error("OTP verification error:", err);
+        alert("Something went wrong. Please try again.");
+    }
+}
+
+
+async function loginUser() {
+    const usernameoremail = document.getElementById("login-user").value;
+    const password = document.getElementById("login-pass").value;
+    console.log("Username or Email:", usernameoremail);
+    console.log("Password:", password);
+    try {
+        const response = await fetch("http://localhost:5000/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ usernameoremail, password })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log("Token received from backend:", data.token);
+            // Check if a token is present in the response
+            if (data.token) {
+                sessionStorage.setItem("token", data.token);
+                console.log("Token saved to sessionStorage:", sessionStorage.getItem("token"));
+                alert("Login successful");
+
+                // Optionally redirect to another page after successful login
+                window.location.href = "index.html"; // Adjust this to your desired location
+            } else {
+                alert("Login failed, no token received.");
+            }
+        } else {
+            // Handle non-OK responses (e.g., wrong credentials)
+            const errorData = await response.json();
+            alert(errorData.message || "Invalid credentials");
+        }
+    } catch (error) {
+        // Handle network errors or unexpected issues
+        console.error("Error during login:", error);
+        alert("An error occurred. Please try again.");
+    }
+}
+function showForgotPasswordModal() {
+    document.getElementById('forgotPasswordModal').style.display = 'flex';
+  }
+
+  function closeForgotPasswordModal() {
+    document.getElementById('forgotPasswordModal').style.display = 'none';
+  }
+
+  async function sendResetLink() {
+    const email = document.getElementById('resetEmail').value.trim();
+    if (!email) return alert("Please enter your email");
+
+    try {
+      const res = await fetch("http://localhost:5000/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert("Reset link sent to your email!");
+        closeForgotPasswordModal();
+      } else {
+        alert(data.error || "Failed to send reset link.");
+      }
+    } catch (err) {
+      console.error("Error:", err);
+      alert("Something went wrong.");
+    }
+  }
+  async function submitOTP() {
+  const otp = document.getElementById("otp-input").value.trim();
+  if (!otp) return alert("Please enter the OTP.");
+
+  try {
+    const res = await fetch("http://localhost:5000/verify-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contact: currentContactValue,
+        otp
+      })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      alert("Registration successful!");
+      sessionStorage.setItem("token", data.token);
+      sessionStorage.setItem("userId", data.user.id);
+      window.location.href = "upload-profile-picture.html";
+    } else {
+      alert(data.error || "OTP verification failed.");
+    }
+  } catch (err) {
+    console.error("OTP Submit Error:", err);
+    alert("Something went wrong while verifying OTP.");
+  }
+}
+
+  let currentUserData = {};
+let currentContactValue = "";
+
+function showOtpModal(contactMethod) {
+  document.getElementById("otpModal").style.display = "flex";
+  document.getElementById("otpContactMethod").textContent = contactMethod;
+}
+
+function closeOtpModal() {
+  document.getElementById("otpModal").style.display = "none";
+}
+
+
+    </script>
+</body>
+</html>

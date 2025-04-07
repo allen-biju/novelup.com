@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: book-rental-backend
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: EMAIL_USER
+        value: bijuallen51@gmail.com
+      - key: EMAIL_PASS
+        value: cnkk escs gjoi umiv
